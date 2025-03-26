@@ -22,7 +22,8 @@ total_sales = data['Sales'].sum()
 print ("Total Sales: $", total_sales)
 # Output: Total Sales: $ 408015039.62999994
 # Convert 'Date' to datetime format
-data['Date'] = pd.to_datetime(data['Date'], format = '%d/%m/%y')
+print (data['Date'].head())
+data['Date'] = pd.to_datetime(data['Date'], dayfirst=True, errors='coerce')
 print (data.head())
 # Set 'Date' as the index
 data.set_index ('Date', inplace = True)
@@ -30,3 +31,13 @@ data.set_index ('Date', inplace = True)
 quarterly_sales = data['Sales'].resample('Q').sum().reset_index()
 quarterly_sales.columns = ['Quarter','Total Sales']
 print (quarterly_sales)
+# Plotting the quarterly sales as a bar chart
+import matplotlib.pyplot as plt
+plt.figure (figsize = (10, 60))
+plt.bar (quarterly_sales['Quarter'].dt.to_period('Q').astype(str), quarterly_sales['Total Sales'])
+plt.title ('Quarterly Sales')
+plt.xlabel ('Quarter')
+plt.ylabel ('Total Sales')
+plt.xticks (rotation = 45)
+plt.tight_layout()
+plt.show()
