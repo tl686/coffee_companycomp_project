@@ -21,3 +21,12 @@ print (data.head())
 total_sales = data['Sales'].sum()
 print ("Total Sales: $", total_sales)
 # Output: Total Sales: $ 408015039.62999994
+# Convert 'Date' to datetime format
+data['Date'] = pd.to_datetime(data['Date'], format = '%d/%m/%y')
+print (data.head())
+# Set 'Date' as the index
+data.set_index ('Date', inplace = True)
+# Calculate quarterly sales
+quarterly_sales = data['Sales'].resample('Q').sum().reset_index()
+quarterly_sales.columns = ['Quarter','Total Sales']
+print (quarterly_sales)
